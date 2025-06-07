@@ -1,0 +1,202 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="{% static 'courier/images/logo.png' %}" type="image/x-icon" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <title>DK_courier</title>
+    <style>
+        body {
+            background-color: rgba(246, 169, 81, 0.207);
+            color: black;
+        }
+
+        .details {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .pac {
+            background-color: white;
+            height: 150px;
+            border-radius: 10px;
+            flex: 1 1 22%;
+            min-width: 200px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.31);
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+
+        .pac:hover {
+            transform: scale(1.05);
+            background-color: rgba(255, 183, 0, 0.142);
+            cursor: pointer;
+        }
+
+        .pac h1 {
+            font-size: 20px;
+            margin-bottom: 5px;
+        }
+
+        .pac h2 {
+            font-size: 14px;
+            color: #555;
+            margin: 0;
+        }
+
+        /* Search section styling */
+        .search {
+            margin-top: 3rem;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .search input[type="text"],
+        .search input[type="date"],
+        .search button {
+            padding: 10px 15px;
+            border-radius: 8px;
+            border: 1.5px solid #ccc;
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            height: 42px;
+            box-sizing: border-box;
+        }
+
+        .search button {
+            background-color: orange;
+            color: white;
+            border: none;
+            cursor: pointer;
+            min-width: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .search input[type="text"]::placeholder {
+            color: #aaa;
+        }
+
+        .search input[type="text"]:focus,
+        .search input[type="date"]:focus {
+            border-color: orange;
+            box-shadow: 0 0 5px rgba(255, 165, 0, 0.6);
+        }
+
+        .search button:hover {
+            background-color: darkorange;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 600px) {
+            .search input[type="text"],
+            .search input[type="date"],
+            .search button {
+                width: 100%;
+                min-width: unset;
+            }
+        }
+    </style>
+</head>
+<body>
+    {% include "courier/dashboard-nav.html" %}
+    <div class="container">
+        <div class="details">
+            <div class="t-s pac">
+                <h1>Total Shipment</h1>
+                <h2>OK</h2>
+            </div>
+            <div class="t-cash pac">
+                <h1>Total Cash Shipment</h1>
+                <h2>OK</h2>
+            </div>
+            <div class="t-cod pac">
+                <h1>Total Credit Shipment</h1>
+                <h2>OK</h2>
+            </div>
+            <div class="list pac">
+                <h1>Manifest List</h1>
+                <h2>OK</h2>
+            </div>
+        </div>
+
+        <div class="search">
+            <input type="text" name="sender-name" id="sender-name" placeholder="Sender Name" />
+            <input type="date" name="s-date" id="s-date" />
+            <input type="date" name="e-date" id="e-date" />
+            <button type="submit">Search</button>
+            <!-- <hr style="width:100%; margin:1rem 0; "> -->
+             <hr style="height: 6px; background-color: orange; border: none; border-radius: 10px;">
+
+            <button>Create Order</button>
+            <button>Invoice</button>
+            <button>Bills</button>
+            <input class="form-control w-50" id="myInput" type="text" placeholder="Search.." />
+        </div>
+
+        <div id="Booked_items" class="table-responsive mt-4">
+            <table class="table table-bordered table-hover">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Select <input type="checkbox" id="selectAll" onclick="toggleSelectAll()"></th>
+                        <th>CN No</th>
+                        <th>Booking Date</th>
+                        <th>Sender Name</th>
+                        <!--<th>Sender Address</th>-->
+                        <th>Sender Contact</th>
+                        <th>Packet Type</th>
+                        <th>Quantity</th>
+                        <th>Receiver Name</th>
+                        <th>Receiver Address</th>
+                        <th>Receiver Contact</th>
+                        <th>Delivery Type</th>
+                        <th>Remarks</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th><input type="checkbox" id="selectAll" onclick="toggleSelectAll()"></th>
+                        <th>D1505</th>
+                        <th>2025-01-01</th>
+                        <th>Ashish</th>
+                        <!--<th>Sender Address</th>-->
+                        <th>9800000000</th>
+                        <th>Pac</th>
+                        <th>1 pices</th>
+                        <th>Dilkumar upercoti</th>
+                        <th>btm</th>
+                        <th>98000000</th>
+                        <th>Door-Door</th>
+                        <th>Remarks</th>
+                    </tr>
+                    <tr>
+                        <td colspan="12" class="text-center">No results found</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

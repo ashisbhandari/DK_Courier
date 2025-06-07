@@ -1,0 +1,327 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DK Courier-Navbar</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <style>
+        body {
+            padding-top: 110px;
+        }
+
+        .navbar-wrapper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background: linear-gradient(135deg, #e0f7fa, #e1bee7);
+            box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
+            transition: top 0.3s ease; /* Smooth transition for hiding */
+        }
+
+        .navbar-top {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            padding: 7px 10px;
+        }
+
+        .social-icons a {
+            color: black;
+            font-size: 18px;
+            margin-right: 10px;
+            transition: 0.3s;
+        }
+
+        .social-icons a:hover {
+            color: #ff6347;
+        }
+
+        .contact-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            font-size: 16px;
+        }
+
+        .contact-container .con {
+            margin: 5px;
+        }
+
+        .contact-container a {
+            display: flex;
+            align-items: center;
+        }
+
+        .contact-container .icn {
+            margin-right: 5px;
+        }
+
+        .btn-login {
+            border: 2px solid green;
+            color: green;
+            padding: 8px 12px;
+            border-radius: 5px;
+            transition: 0.3s;
+        }
+
+        .btn-login:hover {
+            background: green;
+            color: white;
+        }
+
+        .navbar-bottom {
+            background: #e1bee7;
+            height: 80px;
+            transition: background 0.3s ease;
+        }
+
+        .navbar-bottom .nav-link {
+            color: black !important;
+            font-weight: bold;
+        }
+
+        .navbar-bottom .nav-link:hover {
+            color: #ff6347;
+        }
+
+        #ticketOptions {
+            width: 150px;
+            font-size: 14px;
+            padding: 5px;
+        }
+
+        .login {
+            font-size: 15px;
+        }
+
+        .con {
+            margin: 10px;
+        }
+
+        .icn {
+            margin: 2px;
+        }
+
+        .scroll-text-container {
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        .scroll-text {
+            display: inline-block;
+            animation: scroll-left 10s linear infinite;
+            color: black;
+            font-weight: bold;
+        }
+
+        @keyframes scroll-left {
+            0% {
+                transform: translateX(100%);
+            }
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .navbar-top {
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .social-icons {
+                margin-bottom: 10px;
+                display: flex;
+                justify-content: center;
+                width: 100%;
+            }
+
+            .social-icons a {
+                font-size: 20px; 
+                margin-right: 15px;
+            }
+
+            .contact-container{
+                display: flex;
+                justify-content: center;
+                flex-wrap: wrap;
+                gap: 10px;
+                font-size: 15px;
+            }
+
+            #ticketOptions{
+                width: 80px;
+            }
+
+            .contact-container .con {
+                margin: 2px;
+            }
+
+            .contact-container a {
+                display: flex;
+                align-items: center;
+            }
+
+            .contact-container .icn {
+                margin-right: 5px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .contact-container {
+                font-size: 10px; 
+            }
+
+            .social-icons a {
+                font-size: 18px; 
+            }
+
+            .navbar-top {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .login-options {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar-wrapper" id="navbarWrapper">
+        <!-- First Row -->
+        <div class="navbar-top" id="navbarTop">
+            <div class="social-icons">
+                <a href="#" target="_blank"><i class="fab fa-whatsapp"></i></a>
+                <a href="#" target="_blank"><i class="fab fa-facebook"></i></a>
+                <a href="#" target="_blank"><i class="fab fa-instagram"></i></a>
+                <a href="#" target="_blank"><i class="fab fa-youtube"></i></a>
+            </div>
+            <div class="d-flex contact-container">
+                <div class="phone-container con">
+                    <a href="tel:+9779801445777" class="text-black">
+                        <i class="fas fa-phone-alt icn"></i> 9800000000
+                    </a>
+                </div>
+                <div class="phone-container con">
+                    <a href="tel:+9779824915826" class="text-black">
+                        <i class="fas fa-phone-alt icn"></i> 980000000
+                    </a>
+                </div>
+                <div class="email-container con">
+                    <a href="mailto:photolaija@email.com" class="text-black">
+                        <i class="fas fa-envelope icn"></i> dkCourier@gmail.com
+                    </a>
+                </div>
+            </div>
+            <style>
+                #ticketOptions {
+                    appearance: none;
+                    -webkit-appearance: none;
+                    -moz-appearance: none;
+                    background: transparent;
+                    border: 2px solid white;
+                    color: black;
+                    padding: 5px 30px 5px 10px;
+                    font-size: 14px;
+                    background-image: url('data:image/svg+xml;utf8,<svg fill="black" height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+                    background-repeat: no-repeat;
+                    background-position: right 10px center;
+                    background-size: 25px;
+                    box-shadow: 0px 2px 10px rgba(90, 20, 160, 0.12);
+                }
+                </style>
+            <div class="d-flex login-options">
+                <select class="form-select me-2 box" id="ticketOptions" onchange="navigateToPage()">
+                    <option selected>Track and Trace</option>
+                    <option id="ticketOptions" value="/#bus_ticket">Track Your packet</option>
+                    <option id="ticketOptions" value="/cancel_ticket">Request for packet information</option>
+                </select>
+
+                <script>
+                    function navigateToPage() {
+                        let select = document.getElementById("ticketOptions");
+                        let value = select.value;
+
+                        if (value !== "Tickets") {
+                            window.location.href = value;
+                        }
+                    }
+                </script>
+
+
+                <a href="/Login" class="me-2 reg">
+                    <button type="button" class="btn btn-login">
+                        <i class="fas fa-sign-in-alt me-1 login"> Login</i>
+                    </button>
+                </a>
+
+                <a href="/SignUp" class="me-2 reg" >
+                    <button type="button" class="btn btn-login">
+                        <i class="fas fa-user-plus me-1 login"> Signup</i>
+                    </button>
+                </a>
+            </div>
+        </div>
+
+        <!-- Second Navbar -->
+        <nav class="navbar navbar-expand-lg navbar-bottom">
+            <div class="container">
+                <a class="navbar-brand" href="/">
+                    <img src="{% static 'courier/images/logo.png' %}" alt="SajiloYatra" width="100" height="60">
+                </a>
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/#abt">About</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/#service">Services</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/#contact">Contact</a></li>
+                    </ul>
+
+                    <div class="scroll-text-container">
+                        <a href="/"><div class="scroll-text">
+                            ( Let's share our love with our relatives through DK Courier. )
+                        </div></a>
+                    </div>
+
+                </div>
+            </div>
+        </nav>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        window.addEventListener('scroll', function() {
+            let navbarTop = document.getElementById('navbarTop');
+            let navbarWrapper = document.getElementById('navbarWrapper');
+            if (window.scrollY > 50) { 
+                navbarTop.style.display = 'none'; 
+            } else {
+                navbarTop.style.display = 'flex';
+            }
+        });
+    </script>
+
+</body>
+</html>
