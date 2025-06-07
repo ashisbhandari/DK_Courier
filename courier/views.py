@@ -54,7 +54,7 @@ def user_logout(request):
     logout(request)
     return redirect('/')
 def home(request):
-    return render(request,'courier/home.html')
+    return render(request,'courier/index.html')
 def navbar(request):
     return render(request,'courier/dash-nav.html')
 # @login_required(login_url='/Login/')
