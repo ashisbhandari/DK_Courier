@@ -62,3 +62,5 @@ def dashboard(request):
     return render(request, 'courier/dashboard.html')
 def check(request):
     return render(request,'courier/check.html')
+def bookdoc(request):
+    return render(request,'courier/bookdoc.html')
