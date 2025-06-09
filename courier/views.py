@@ -20,7 +20,7 @@ def signup(request):
     else:
         form = SignupForm()
     return render(request, 'courier/signup.html', {'form': form})
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
 
@@ -60,7 +60,37 @@ def navbar(request):
 # @login_required(login_url='/Login/')
 def dashboard(request):
     return render(request, 'courier/dashboard.html')
+
+from .models import BookingList
 def check(request):
-    return render(request,'courier/check.html')
+    bookings = BookingList.objects.all()  # fetch all rows
+    context = {
+        'bookings': bookings
+    }
+    return render(request, 'courier/check.html', context)
+
+from .forms import BookingForm
+
 def bookdoc(request):
-    return render(request,'courier/bookdoc.html')
+    if request.method == 'POST':
+        form = BookingForm(request.POST)
+        if form.is_valid():
+            # Access data with form.cleaned_data
+            # Save or process booking
+            messages.success(request, "Booking successfully submitted!")
+            return redirect('some-view-name')
+        else:
+            print(form.errors)
+            messages.error(request, "Please correct the errors below.")
+    else:
+        form = BookingForm()
+
+    return render(request, 'courier/bookdoc.html', {'form': form})
+
+
+from .models import BookingForm
+from .forms import BookingFormForm
+def book_edit(request, pk):
+    booking = get_object_or_404(booking, pk=pk)
+    context = {'booking': booking}
+    return render(request, 'courier/edit_booking.html', context)

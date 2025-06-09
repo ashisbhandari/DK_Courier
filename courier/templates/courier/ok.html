@@ -55,6 +55,7 @@
             margin: 0;
         }
 
+        /* Search section styling */
         .search {
             margin-top: 3rem;
             padding: 20px;
@@ -106,6 +107,7 @@
             background-color: darkorange;
         }
 
+        /* Responsive adjustments */
         @media (max-width: 600px) {
             .search input[type="text"],
             .search input[type="date"],
@@ -113,13 +115,6 @@
                 width: 100%;
                 min-width: unset;
             }
-        }
-
-        /* Button group responsiveness */
-        .btn-group {
-            display: flex;
-            gap: 5px;
-            flex-wrap: wrap;
         }
     </style>
 </head>
@@ -140,21 +135,24 @@
                 <h2>OK</h2>
             </div>
             <div class="list pac">
-                <h1>Manifest List</h1>
+                <h1>Manifest List</h1>b
                 <h2>OK</h2>
             </div>
         </div>
 
+
+        
         <div class="search">
             <input type="text" name="sender-name" id="sender-name" placeholder="Sender Name" />
             <input type="date" name="s-date" id="s-date" />
             <input type="date" name="e-date" id="e-date" />
             <button type="submit">Search</button>
-            <hr style="width:100%; margin:1rem 0;">
+            <hr style="width:100%; margin:1rem 0; ">
+
             <a href="/book"><button>Create Order</button></a>
             <button>Invoice</button>
             <button>Bills</button>
-            <input class="form-control w-50" id="filter" type="text" placeholder="Search.." />
+            <input class="form-control w-50" id="myInput" type="text" placeholder="Search.." />
         </div>
 
         <div id="Booked_items" class="table-responsive mt-4">
@@ -165,6 +163,7 @@
                         <th>CN No</th>
                         <th>Booking Date</th>
                         <th>Sender Name</th>
+                        <!--<th>Sender Address</th>-->
                         <th>Sender Contact</th>
                         <th>Packet Type</th>
                         <th>Quantity</th>
@@ -172,47 +171,28 @@
                         <th>Receiver Address</th>
                         <th>Receiver Contact</th>
                         <th>Delivery Type</th>
-                        <th>Actions</th>
+                        <th>Remarks</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {% for booking in bookings %}
                     <tr>
-                        <td><input type="checkbox" name="selected_booking" value="{{ booking.cn_no }}"></td>
-                        <td>{{ booking.cn_no }}</td>
-                        <td>{{ booking.date }}</td>
-                        <td>{{ booking.sname }}</td>
-                        <td>{{ booking.snumber }}</td>
-                        <td>{{ booking.pactype }}</td>
-                        <td>{{ booking.pieces }}</td>
-                        <td>{{ booking.rname }}</td>
-                        <td>{{ booking.raddress }}</td>
-                        <td>{{ booking.rnumber }}</td>
-                        <td>{{ booking.service }}</td>
-                        <td>
-                            <div class="btn-group" class="bi bi-pencil-square">
-                                <!-- Edit Button -->
-                                <a href="{% url 'book_edit' booking.id %}" class="btn btn-sm btn-primary">Edit</a>
-                                </a>
-
-                                <!-- Delete Button with confirmation -->
-                                <form  method="post" style="display:inline;">
-                                    {% csrf_token %}
-                                    <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this booking?')">
-                                        <i class="bi bi-trash"></i> Delete
-                                    </button>
-                                </form>
-
-                                <!-- Print Button -->
-                                <a  target="_blank" class="btn btn-sm btn-secondary">
-                                    <i class="bi bi-printer"></i> Print
-                                </a>
-                            </div>
-                        </td>
+                        <th><input type="checkbox" id="selectAll" onclick="toggleSelectAll()"></th>
+                        <th>D1505</th>
+                        <th>2025-01-01</th>
+                        <th>Ashish</th>
+                        <!--<th>Sender Address</th>-->
+                        <th>9800000000</th>
+                        <th>Pac</th>
+                        <th>1 pices</th>
+                        <th>Dilkumar upercoti</th>
+                        <th>btm</th>
+                        <th>98000000</th>
+                        <th>Door-Door</th>
+                        <th>Remarks</th>
                     </tr>
-                    {% empty %}
-                    <tr><td colspan="12" class="text-center">No bookings found.</td></tr>
-                    {% endfor %}
+                    <tr>
+                        <td colspan="12" class="text-center">No results found</td>
+                    </tr>
                 </tbody>
             </table>
         </div>
