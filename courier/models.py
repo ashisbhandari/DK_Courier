@@ -173,7 +173,7 @@ class PdfParcel(models.Model):
     date = models.DateField(verbose_name="Date of Booking")
     country= models.CharField(max_length=100)
     district= models.CharField(max_length=100)
-    
+    payments= models.CharField(max_length=100)
     # Sender details
     Sname = models.CharField(max_length=100, verbose_name="Sender Name")
     Snumber = models.CharField(max_length=20, verbose_name="Sender Phone Number")

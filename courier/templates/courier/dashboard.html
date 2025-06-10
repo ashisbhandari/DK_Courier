@@ -183,8 +183,9 @@
                         <td>
                             <input type="checkbox" name="selected_booking" value="{{ booking.cn_no }}">
                         </td>
-                        <td>{{ booking.cn_no }}</td>
-                        <td>{{ booking.date }}</td>
+                       <td><a href="/bills/{{ booking.cn_no }}/">{{ booking.cn_no }}</a></td>
+                       <td><a href="/billsbank/{{ booking.cn_no }}/">{{ booking.date }}</a></td>
+                        {% comment %} <td>{{ booking.date }}</td> {% endcomment %}
                         <td>{{ booking.sname }}</td>
                         <td>{{ booking.snumber }}</td>
                         <td>{{ booking.pactype }}</td>
@@ -201,16 +202,17 @@
                         </td>
                         <td>
                             <div class="btn-group" role="group" aria-label="Actions">
-                                <a href="{% url 'book_edit' booking.id %}" class="btn btn-sm btn-primary" title="Edit">
+                                <a href="/edit/{{ booking.cn_no }}/" class="btn btn-sm btn-primary"><i class="bi bi-pencil-square">EDIT</i></a>
+                                {% comment %} <a href="{% url 'book_edit' booking.id %}" class="btn btn-sm btn-primary" title="Edit">
                                     <i class="bi bi-pencil-square"></i>
-                                </a>
+                                </a> {% endcomment %}
                                 <form method="post" style="display:inline;">
                                     {% csrf_token %}
                                     <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this booking?')" title="Delete">
                                         <i class="bi bi-trash"></i>
                                     </button>
                                 </form>
-                                <a href="#" target="_blank" class="btn btn-sm btn-secondary" title="Print">
+                                <a href="/bills/{{ booking.cn_no }}/" target="_blank" class="btn btn-sm btn-secondary" title="Print">
                                     <i class="bi bi-printer"></i>
                                 </a>
                             </div>

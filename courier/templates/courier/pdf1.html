@@ -107,7 +107,7 @@
         <button class="print-btn" onclick="window.print()">🖨️ Print</button>
         <a href="/book" class="btn btn-success ml-3 home-btn">Create Order</a>
         <a href="/dashboard" class="btn btn-success ml-3 home-btn">🏠 Home</a>
-        <a href="/billsbank/{{ row.CN_No }}/" class="btn btn-success ml-3 home-btn">Bank</a>
+        <a href="/bills/{{ row.CN_No }}/" class="btn btn-success ml-3 home-btn">Customer</a>
     </div>
 
     <table>
@@ -153,9 +153,9 @@
         </tr>
         <tr>
             <td class="center">{{ row.pieces }} piece</td>
-            <td class="center">{{ row.payments }} = Rs: {{ row.price }}</td>
+            <td class="center"></td>
             <td class="center">{{ row.service }}</td>
-            <td class="center">{{ row.weight }} KG</td>
+            <td class="center"></td>
             <td colspan="2" rowspan="2" class="left-align" style="padding-left: 10px;">
                 <h4>Name: .................................<br />
                 Sign: ................................<br />
@@ -199,10 +199,9 @@ Service: {{ row.service }} | Rs: {{ row.price }}`;
             width: 130,
             height: 130
         });
+
     });
 </script>
         {% comment %} setTimeout(() => window.print(), 300); {% endcomment %}
-
-
 </body>
 </html>

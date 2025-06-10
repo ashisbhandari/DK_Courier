@@ -57,23 +57,8 @@ def home(request):
 def navbar(request):
     return render(request,'courier/dash-nav.html')
 # @login_required(login_url='/Login/')
-def dashboard(request):
-    return render(request, 'courier/dashboard.html')
-
-
-from .models import BookingList
-
-# def check(request):
-#     bookings = BookingList.objects.all().order_by('-date')  # You can filter/search here later
-#     return render(request, 'courier/check.html',{
-#         'bookings': bookings,
-#     })
-
-from django.shortcuts import render
-from .models import BookingList
-
-def check(request):
-    bookings = BookingList.objects.all()
+def dashboard1(request):
+    bookings = BookingList.objects.order_by('-id')
 
     total_shipments = bookings.count()
     total_cash = bookings.filter(payments='Cash').count()
@@ -87,9 +72,32 @@ def check(request):
         'total_cod': total_cod,
         'total_credit': total_credit,
     }
-    return render(request, 'courier/check.html', context)
+    return render(request, 'courier/check.html',context)
 
 
+from .models import BookingList
+from django.shortcuts import render
+from .models import BookingList
+
+def dashboard(request):
+    bookings = BookingList.objects.order_by('-id')
+
+    total_shipments = bookings.count()
+    total_cash = bookings.filter(payments='Cash').count()
+    total_cod = bookings.filter(payments='COD').count()
+    total_credit = bookings.filter(payments='Credit').count()
+
+    context = {
+        'bookings': bookings,
+        'total_shipments': total_shipments,
+        'total_cash': total_cash,
+        'total_cod': total_cod,
+        'total_credit': total_credit,
+    }
+    return render(request, 'courier/dashboard.html', context)
+
+from django.shortcuts import render, get_object_or_404
+from .models import PdfParcel
 from .forms import BookingForm 
 def bookdoc(request):
     if request.method == 'POST':
@@ -101,11 +109,22 @@ def bookdoc(request):
         form = BookingForm() 
     return render(request, 'courier/bookdoc.html', {'form': form})
 
-def book_edit(request):  
-    return render(request, 'courier/edit_booking.html')
-from django.shortcuts import render, get_object_or_404
-from .models import PdfParcel
+def book_edit(request, cn_no):
+    parcel = get_object_or_404(PdfParcel, CN_No=cn_no)
+    if request.method == 'POST':
+        form = BookingForm(request.POST, instance=parcel)
+        if form.is_valid():
+            form.save()
+            return redirect('/dashboard')
+    else:
+        form = BookingForm(instance=parcel)
+    return render(request, 'courier/edit.html', {'row': parcel, 'form': form})
+
+
 
 def pkt_pdf(request, cn_no):  # Get cn_no from URL param
     parcel = get_object_or_404(PdfParcel, CN_No=cn_no)
     return render(request, 'courier/pdf.html', {'row': parcel})
+def pkt_pdf1(request, cn_no):  # Get cn_no from URL param
+    parcel = get_object_or_404(PdfParcel, CN_No=cn_no)
+    return render(request, 'courier/pdf1.html', {'row': parcel})
