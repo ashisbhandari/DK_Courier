@@ -11,6 +11,7 @@ urlpatterns = [
     path('dashboard/',views.check,name='check'),
     path('book/',views.bookdoc,name="book Documents"),
     path('book/edit/<int:pk>/', views.book_edit, name='book_edit'),
+    path('bills/<str:cn_no>/', views.pkt_pdf, name='pdf'),
 
 
     

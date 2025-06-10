@@ -141,48 +141,57 @@ class Booking_list(models.Model):
         
     def __str__(self):
         return f"{self.cn_no} to {self.country} ({self.Rname})"
-
-
-class BookingForm(models.Model):
-    cn_no = models.CharField(max_length=50, unique=True)
-    country = models.CharField(max_length=100)
-    district = models.CharField(max_length=100, blank=True, null=True)
-    pactype = models.CharField(max_length=20)
-    date = models.DateField(auto_now_add=True)
     
-    Sname = models.CharField(max_length=100)
-    Snumber = models.CharField(max_length=10)
-    Saddress = models.CharField(max_length=200)
-    Saddress1 = models.CharField(max_length=200, blank=True, null=True)
     
-    Rname = models.CharField(max_length=100)
-    Rnumber = models.CharField(max_length=10)
-    Raddress = models.CharField(max_length=200)
-    Raddress1 = models.CharField(max_length=200, blank=True, null=True)
-    
-    payments = models.CharField(max_length=20)
-    service = models.CharField(max_length=50)
-    price = models.DecimalField(max_digits=10, decimal_places=2)
-    weight = models.DecimalField(max_digits=5, decimal_places=2)
-    pieces = models.IntegerField()
-    Bookby = models.CharField(max_length=100, blank=True, null=True)
-    
-    def __str__(self):
-        return self.cn_no
+    # list data
+from django.db import models
 
 class BookingList(models.Model):
+    # Your fields here
     cn_no = models.CharField(max_length=100)
+    payments = models.CharField(max_length=50, choices=[('Cash', 'Cash'), ('Credit', 'Credit'), ('COD', 'COD')])
     date = models.DateField()
     sname = models.CharField(max_length=100)
-    snumber = models.CharField(max_length=20)
+    snumber = models.CharField(max_length=15)
     pactype = models.CharField(max_length=100)
     pieces = models.IntegerField()
     rname = models.CharField(max_length=100)
     raddress = models.TextField()
-    rnumber = models.CharField(max_length=20)
+    rnumber = models.CharField(max_length=15)
     service = models.CharField(max_length=100)
-    # Remarks = models.TextField()
+    # remarks = models.TextField(blank=True, null=True)
 
     class Meta:
+        db_table = 'booking_list'  # explicitly use your existing table name
+        managed = False  # This tells Django not to manage (create/delete) this table
+        
+        
+
+
+class PdfParcel(models.Model):
+    CN_No = models.CharField(max_length=50, unique=True, verbose_name="Consignment Number")
+    date = models.DateField(verbose_name="Date of Booking")
+    country= models.CharField(max_length=100)
+    district= models.CharField(max_length=100)
+    
+    # Sender details
+    Sname = models.CharField(max_length=100, verbose_name="Sender Name")
+    Snumber = models.CharField(max_length=20, verbose_name="Sender Phone Number")
+    Saddress = models.TextField(verbose_name="Sender Address")
+    
+    # Receiver details
+    Rname = models.CharField(max_length=100, verbose_name="Receiver Name")
+    Rnumber = models.CharField(max_length=20, verbose_name="Receiver Phone Number")
+    Raddress = models.TextField(verbose_name="Receiver Address")
+    
+    pieces = models.PositiveIntegerField(verbose_name="Number of Pieces")
+    price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Charges (Rs.)")
+    service = models.CharField(max_length=100, verbose_name="Service Type")
+    weight = models.DecimalField(max_digits=6, decimal_places=2, verbose_name="Weight (KG)")
+    Bookby = models.CharField(max_length=100, verbose_name="Booked By")
+    
+    def __str__(self):
+        return f"DK {self.CN_No} - {self.Sname} to {self.Rname}"
+    
+    class Meta:
         db_table = 'booking_list'
-        managed = False  # since you're using an existing table

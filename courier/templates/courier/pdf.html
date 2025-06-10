@@ -1,0 +1,207 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>DK Courier-Bills</title>
+    <link rel="icon" href="{% static 'courier/images/logo.png' %}" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 40px;
+            background: #fff;
+            color: #000;
+        }
+        .receipt-container {
+            border: 1px solid #333;
+            padding: 20px;
+            max-width: 900px;
+            margin: auto;
+            background: #fff;
+        }
+        .bold {
+            font-weight: bold;
+        }
+        .print-btn {
+            padding: 10px 25px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #2d89ef;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            margin-right: 10px;
+        }
+        .btn-group {
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+        td, th {
+            border: 1px solid #333;
+            padding: 8px;
+            vertical-align: top;
+        }
+        .center {
+            text-align: center;
+        }
+        .left-align {
+            text-align: left;
+        }
+        .thank-you {
+            text-align: center;
+            margin-top: 20px;
+            font-style: italic;
+            font-size: 18px;
+        }
+        #barcode {
+            width: 280px;
+            height: 45px;
+            margin: auto;
+            display: block;
+        }
+        #qrcode {
+            width: 130px;
+            height: 130px;
+            margin: auto;
+            padding: 5px;
+        }
+
+        @media print {
+            .btn-group, .print-btn {
+                display: none;
+            }
+            .receipt-container {
+                border: none;
+                margin: 0;
+                padding: 0;
+            }
+            table td, table th {
+                padding: 4px !important;
+                font-size: 12px !important;
+            }
+            h2 {
+                font-size: 18px !important;
+            }
+            .thank-you {
+                font-size: 14px !important;
+                margin-top: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="receipt-container">
+
+    <div class="btn-group">
+        <button class="print-btn" onclick="window.print()">🖨️ Print</button>
+        <a href="/book" class="btn btn-success ml-3 home-btn">Create Order</a>
+        <a href="#" class="btn btn-success ml-3 home-btn">🏠 Home</a>
+        <a href="#" class="btn btn-success ml-3 home-btn">Bank</a>
+    </div>
+
+    <table>
+        <tr>
+            <td colspan="2" rowspan="2" class="left-align" style="padding: 5px;">
+                <img src="{% static 'courier/images/logo.png' %}" class="img-fluid" alt="DK Courier">
+                <div>Phone: 023-534177, 9801376348</div>
+                <div>Address: Birtamode, Jhapa</div>
+            </td>
+            <td class="center" style="width: 100px;">Date:</td>
+            <td class="center" style="width: 80px;">Origin:</td>
+            <td class="center" style="width: 80px;">Destination:</td>
+            <td rowspan="2" class="center" style="width: 300px; padding: 10px;">
+                <svg id="barcode"></svg>
+                <div>{{ row.CN_No }}</div>
+            </td>
+        </tr>
+        <tr>
+            <td class="center"><strong>{{ row.date }}</strong></td>
+            <td class="center"><strong>Birtamode</strong></td>
+            <td class="center"><strong>{{ row.district}}||{{row.country}}</strong></td>
+        </tr>
+        <tr>
+            <td colspan="3" class="center">
+                <div class="bold" style="text-decoration: underline;">Sender Details</div>
+                <div>{{ row.Sname }}</div>
+                <div>{{ row.Snumber }}</div>
+                <div>{{ row.Saddress }}</div>
+            </td>
+            <td colspan="3" class="center">
+                <div class="bold" style="text-decoration: underline;">Receiver Details</div>
+                <div>{{ row.Rname }}</div>
+                <div>{{ row.Rnumber }}</div>
+                <div>{{ row.Raddress }} {{ row.district }},{{row.country}}</div>
+            </td>
+        </tr>
+        <tr>
+            <td class="center">No. of Piece</td>
+            <td class="center">Charges</td>
+            <td class="center" style="width: 130px;">Service</td>
+            <td class="center">Weight</td>
+            <td colspan="2" class="center">Received in good Condition</td>
+        </tr>
+        <tr>
+            <td class="center">{{ row.pieces }} piece</td>
+            <td class="center">Rs: {{ row.price }}</td>
+            <td class="center">{{ row.service }}</td>
+            <td class="center">{{ row.weight }} KG</td>
+            <td colspan="2" rowspan="2" class="left-align" style="padding-left: 10px;">
+                <h4>Name: .................................<br />
+                Sign: ................................<br />
+                Date: ......................... Stamp: .........</h4>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3" class="center" style="padding-top: 0;">
+                <p>Please Don't put cash in Envelope</p>
+                <p>Booked By: <strong>{{ row.Bookby }}</strong></p>
+                <p class="thank-you">Thank You For Using DK Courier & Cargo Service</p>
+                
+            </td>
+            <td class="center" style="padding-top: 0;">
+                <div id="qrcode" alt="QR code"></div>
+            </td>
+        </tr>
+    </table>
+
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const barcodeData = "{{ row.CN_No|escapejs }}";
+        JsBarcode("#barcode", barcodeData, {
+            format: "CODE128",
+            lineColor: "#000",
+            width: 1.2,
+            height: 45,
+            displayValue: false
+        });
+
+        const qrContent = `CN No: {{ row.CN_No }}
+Sender: {{ row.Sname }} ({{ row.Snumber }})
+Receiver: {{ row.Rname }} ({{ row.Rnumber }})
+{{ row.Destination }}
+Service: {{ row.service }} | Rs: {{ row.price }}`;
+
+        new QRCode(document.getElementById("qrcode"), {
+            text: qrContent,
+            width: 130,
+            height: 130
+        });
+        setTimeout(() => window.print(), 300);
+    });
+</script>
+
+</body>
+</html>

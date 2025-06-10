@@ -1,6 +1,5 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-# from django.contrib.auth.hashers import check_password
 from .forms import SignupForm
 from .models import Signup
 from django.contrib.auth.decorators import login_required
@@ -61,36 +60,52 @@ def navbar(request):
 def dashboard(request):
     return render(request, 'courier/dashboard.html')
 
+
 from .models import BookingList
+
+# def check(request):
+#     bookings = BookingList.objects.all().order_by('-date')  # You can filter/search here later
+#     return render(request, 'courier/check.html',{
+#         'bookings': bookings,
+#     })
+
+from django.shortcuts import render
+from .models import BookingList
+
 def check(request):
-    bookings = BookingList.objects.all()  # fetch all rows
+    bookings = BookingList.objects.all()
+
+    total_shipments = bookings.count()
+    total_cash = bookings.filter(payments='Cash').count()
+    total_cod = bookings.filter(payments='COD').count()
+    total_credit = bookings.filter(payments='Credit').count()
+
     context = {
-        'bookings': bookings
+        'bookings': bookings,
+        'total_shipments': total_shipments,
+        'total_cash': total_cash,
+        'total_cod': total_cod,
+        'total_credit': total_credit,
     }
     return render(request, 'courier/check.html', context)
 
-from .forms import BookingForm
 
+from .forms import BookingForm 
 def bookdoc(request):
     if request.method == 'POST':
         form = BookingForm(request.POST)
         if form.is_valid():
-            # Access data with form.cleaned_data
-            # Save or process booking
-            messages.success(request, "Booking successfully submitted!")
-            return redirect('some-view-name')
-        else:
-            print(form.errors)
-            messages.error(request, "Please correct the errors below.")
+            form.save()
+            return redirect('/dashboard')
     else:
-        form = BookingForm()
-
+        form = BookingForm() 
     return render(request, 'courier/bookdoc.html', {'form': form})
 
+def book_edit(request):  
+    return render(request, 'courier/edit_booking.html')
+from django.shortcuts import render, get_object_or_404
+from .models import PdfParcel
 
-from .models import BookingForm
-from .forms import BookingFormForm
-def book_edit(request, pk):
-    booking = get_object_or_404(booking, pk=pk)
-    context = {'booking': booking}
-    return render(request, 'courier/edit_booking.html', context)
+def pkt_pdf(request, cn_no):  # Get cn_no from URL param
+    parcel = get_object_or_404(PdfParcel, CN_No=cn_no)
+    return render(request, 'courier/pdf.html', {'row': parcel})
