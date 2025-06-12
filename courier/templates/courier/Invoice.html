@@ -19,7 +19,7 @@
         .receipt-container {
             border: 1px solid #333;
             padding: 20px;
-            max-width: 900px;
+            max-width: 90%;
             margin: auto;
             background: #fff;
         }
@@ -87,7 +87,8 @@
             }
             table td, table th {
                 padding: 4px !important;
-                font-size: 12px !important;
+                font-size: 15px !important;
+                font-family: 'Courier New', Courier, monospace;
             }
             h2 {
                 font-size: 18px !important;
@@ -107,73 +108,54 @@
         <button class="print-btn" onclick="window.print()">🖨️ Print</button>
         <a href="/book" class="btn btn-success ml-3 home-btn">Create Order</a>
         <a href="/dashboard" class="btn btn-success ml-3 home-btn">🏠 Home</a>
-        <a href="/bills/{{ row.CN_No }}/" class="btn btn-success ml-3 home-btn">Customer</a>
+        <a href="/billsbank/{{ row.CN_No }}/" class="btn btn-success ml-3 home-btn">Bank</a>
     </div>
 
     <table>
         <tr>
-            <td colspan="2" rowspan="2" class="left-align" style="padding: 5px;">
-                <img src="{% static 'courier/images/logo.png' %}" class="img-fluid" alt="DK Courier">
-                <div>Phone: 9708422701</div>
-                <div>Address: Birtamode, Jhapa</div>
-            </td>
-            <td class="center" style="width: 100px;">Date:</td>
-            <td class="center" style="width: 80px;">Origin:</td>
-            <td class="center" style="width: 80px;">Destination:</td>
-            <td rowspan="2" class="center" style="width: 300px; padding: 10px;">
-                <svg id="barcode"></svg>
-                <div>{{ row.CN_No }}</div>
+            <td colspan="9" style="padding: 5px; text-align: center; vertical-align: middle;">
+                <div style="display: flex; flex-direction: column; align-items: center;">
+                    <img src="{% static 'courier/images/logo.png' %}" class="img-fluid mb-2" alt="DK Courier Logo" style="max-height: 80px;">
+                    <div style="margin-bottom: 5px;">Phone: 9708422701</div>
+                    <div>Address: Birtamode, Jhapa</div>
+                </div>
             </td>
         </tr>
         <tr>
-            <td class="center"><strong>{{ row.date }}</strong></td>
-            <td class="center"><strong>Birtamode</strong></td>
-            <td class="center"><strong>{{ row.district}}||{{row.country}}</strong></td>
+            <th>CN Number</th>
+            <th>Sender Name</th>
+            <th>Packet</th>
+            <th>Receiver Name</th>
+            <th>Destination</th>
+            <th>Receiver Contact</th>
+            <th>No of Pieces</th>
+            <th>Service</th>
+            <th>Remarks</th>
+            <style>
+                td{
+                    font-family: 'Courier New', Courier, monospace;
+                    font-size: 20px;;
+                }
+            </style>
         </tr>
-        <tr>
-            <td colspan="3" class="center">
-                <div class="bold" style="text-decoration: underline;">Sender Details</div>
-                <div>{{ row.Sname }}</div>
-                <div>{{ row.Snumber }}</div>
-                <div>{{ row.Saddress }}</div>
-            </td>
-            <td colspan="3" class="center">
-                <div class="bold" style="text-decoration: underline;">Receiver Details</div>
-                <div>{{ row.Rname }}</div>
-                <div>{{ row.Rnumber }}</div>
-                <div>{{ row.Raddress }} {{ row.district }},{{row.country}}</div>
-            </td>
-        </tr>
-        <tr>
-            <td class="center">No. of Piece</td>
-            <td class="center">Charges</td>
-            <td class="center" style="width: 130px;">Service</td>
-            <td class="center">Weight</td>
-            <td colspan="2" class="center">Received in good Condition</td>
-        </tr>
-        <tr>
-            <td class="center">{{ row.pieces }} piece</td>
-            <td class="center"></td>
-            <td class="center">{{ row.service }}</td>
-            <td class="center"></td>
-            <td colspan="2" rowspan="2" class="left-align" style="padding-left: 10px;">
-                <h4>Name: .................................<br />
-                Sign: ................................<br />
-                Date: ......................... Stamp: .........</h4>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="3" class="center" style="padding-top: 0;">
-                <p>Please Don't put cash in Envelope</p>
-                <p>Booked By: <strong>{{ row.Bookby }}</strong></p>
-                <p class="thank-you">Thank You For Using DK Courier & Cargo Service</p>
+          {% for booking in bookings %}
+                    <tr>
+                        <td>{{ booking.cn_no }}</td>
+                        <td>{{ booking.sname }}</td>
+                        <td>{{ booking.pactype }}</td>
+                        
+                        <td>{{ booking.rname }}</td>
+                        <td>{{ booking.raddress }}</td>
+                        <td>{{ booking.rnumber }}</td>
+                        <td>{{ booking.pieces }}</td>
+                        <td>{{ booking.service }}</td>
+                        <td></td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="12" class="text-center">No bookings found.</td></tr>
+                    {% endfor %}
                 
-            </td>
-            <td class="center" style="padding-top: 0;">
-                <div id="qrcode" alt="QR code"></div>
-            </td>
-        </tr>
-    </table>
+</table>
 
 </div>
 
@@ -199,9 +181,10 @@ Service: {{ row.service }} | Rs: {{ row.price }}`;
             width: 130,
             height: 130
         });
-
     });
 </script>
         {% comment %} setTimeout(() => window.print(), 300); {% endcomment %}
+
+
 </body>
 </html>

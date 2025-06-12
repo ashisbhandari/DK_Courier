@@ -13,6 +13,8 @@ urlpatterns = [
     path('edit/<str:cn_no>/', views.book_edit, name='book_edit'),
     path('bills/<str:cn_no>/', views.pkt_pdf, name='pdf'),
     path('billsbank/<str:cn_no>/', views.pkt_pdf1, name='pdf1'),
+    path('invoice/', views.invoice, name='invoice'),
+    path('bill/', views.courier_bill, name='bills'),
 
 
     

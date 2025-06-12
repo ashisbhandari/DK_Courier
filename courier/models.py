@@ -147,7 +147,6 @@ class Booking_list(models.Model):
 from django.db import models
 
 class BookingList(models.Model):
-    # Your fields here
     cn_no = models.CharField(max_length=100)
     payments = models.CharField(max_length=50, choices=[('Cash', 'Cash'), ('Credit', 'Credit'), ('COD', 'COD')])
     date = models.DateField()
@@ -155,17 +154,17 @@ class BookingList(models.Model):
     snumber = models.CharField(max_length=15)
     pactype = models.CharField(max_length=100)
     pieces = models.IntegerField()
+    price = models.IntegerField()
     rname = models.CharField(max_length=100)
     raddress = models.TextField()
     rnumber = models.CharField(max_length=15)
     service = models.CharField(max_length=100)
-    # remarks = models.TextField(blank=True, null=True)
 
     class Meta:
-        db_table = 'booking_list'  # explicitly use your existing table name
-        managed = False  # This tells Django not to manage (create/delete) this table
+        db_table = 'booking_list' 
+        managed = False  
         
-        
+                    
 
 
 class PdfParcel(models.Model):
