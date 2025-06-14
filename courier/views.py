@@ -261,16 +261,29 @@ def send_email(request):
         # Email sending
         subject = "Thank you for your feedback - DK Courier"
         html_content = f"""
-        <html>
-        <body style="font-family: Arial; padding: 10px;">
-            <h3 style="color: orange;">DK Courier</h3>
-            <p>{message}</p>
-            <hr>
-            <small>This is an automated reply from DK Courier.</small>
-        </body>
-        </html>
-        """
-        email_obj = EmailMessage(subject, html_content, "your_email@example.com", [email])
+<html>
+<body style="font-family: Arial, sans-serif; padding: 10px; text-align: center;">
+    <div style="max-width: 600px; margin: 0 auto;">
+        <h3 style="color: orange; margin-top: 15px;">
+            DK Courier<br>
+            Birtamod Jhapa<br>
+            9708422701 / 98077944547
+        </h3>
+        <p style="font-size: 16px; margin: 20px 0;">{message}</p>
+        
+        Contact us through:
+         <a href="https://www.facebook.com/dilkumar.uparkoti.9" style="text-decoration: none; color: #007bff;">
+                        Dilkumar Uparkoti
+                    </a>
+        <hr>
+        <small style="font-size: 14px; color: #555;">
+            Thank you for choosing DK-Courier as your delivery partner.
+        </small>
+    </div>
+</body>
+</html>
+"""
+        email_obj = EmailMessage(subject, html_content, "bhandari12345ashish@gmail.com", [email])
         email_obj.content_subtype = "html"
         email_obj.send()
 
