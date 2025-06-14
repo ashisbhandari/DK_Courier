@@ -192,3 +192,17 @@ class PdfParcel(models.Model):
     
     class Meta:
         db_table = 'booking_list'
+
+
+from django.utils import timezone
+
+class Complaint(models.Model):
+    name = models.CharField(max_length=100)
+    contact = models.CharField(max_length=15)
+    email = models.EmailField()
+    comments = models.TextField()
+    date_submitted = models.DateField(default=timezone.now)
+    replied = models.BooleanField(default=False)  # New field
+
+    def __str__(self):
+        return f"{self.name} - {self.date_submitted}"

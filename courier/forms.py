@@ -52,3 +52,16 @@ class BookingForm(forms.ModelForm):
             'payments': forms.Select(choices=[('Cash', 'Cash'), ('Credit', 'Credit'), ('COD', 'COD')]),
             'service': forms.Select(choices=[('Door to Door', 'Door to Door'), ('Office Collect', 'Office Collect')]),
         }
+        
+from .models import Complaint
+
+class ComplaintForm(forms.ModelForm):
+    class Meta:
+        model = Complaint
+        fields = ['name', 'contact', 'email', 'comments']
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Full name here...'}),
+            'contact': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '9812345678'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'DKCourier@gmail.com'}),
+            'comments': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Your comments here...'}),
+        }

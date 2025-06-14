@@ -1,0 +1,157 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" href="{% static 'courier/images/logo.png' %}" type="image/x-icon" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <title>DK_courier Complaints</title>
+</head>
+<body>
+  {% include "courier/dashboard-nav.html" %}
+  <div class="container mt-4">
+    <h3>Complaints List</h3>
+    <div class="table-responsive mt-4">
+      <table class="table table-bordered table-hover align-middle">
+        <thead class="table-dark">
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Contact</th>
+            <th>Email</th>
+            <th>Comments</th>
+            <th>Date Submitted</th>
+            <th>Reply</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for complain in complains %}
+          <tr>
+            <td>{{ complain.id }}</td>
+            <td>{{ complain.name }}</td>
+            <td>{{ complain.contact }}</td>
+            <td>{{ complain.email }}</td>
+            <td>{{ complain.comments }}</td>
+            <td>{{ complain.date_submitted }}</td>
+            <td>
+              {% if complain.replied %}
+                <button class="btn btn-sm btn-danger" disabled>
+                  <i class="bi bi-check-circle"></i> Replied
+                </button>
+              {% else %}
+                <button class="btn btn-sm btn-primary reply-btn"
+                        data-email="{{ complain.email }}"
+                        data-id="{{ complain.id }}"
+                        id="reply-btn-{{ complain.id }}">
+                  <i class="bi bi-envelope"></i> Reply
+                </button>
+              {% endif %}
+            </td>
+          </tr>
+          {% empty %}
+          <tr><td colspan="7" class="text-center">No complaints found.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="emailModal" tabindex="-1" aria-labelledby="emailModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <form id="emailForm">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Send Email Reply</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <style>
+  .emaildata {
+      width: 100%;
+      border: none;
+      background-color: transparent;
+      font-weight: bold;
+      font-size: 1rem;
+      color: #000;
+      cursor: default;
+  }
+
+  .emaildata:focus, 
+  .emaildata:hover {
+      border: none;
+      outline: none;
+      box-shadow: none;
+  }
+</style>
+
+<div class="mb-3">
+    <label for="emailTo" class="form-label">Recipient Email</label>
+    <input class="form-control emaildata" id="emailTo" readonly>
+</div>
+
+            <input type="hidden" id="emailRowId">
+            <div class="mb-3">
+              <label for="emailMessage" class="form-label">Message</label>
+              <textarea class="form-control" id="emailMessage" rows="4" placeholder="Write your message..."></textarea>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">Send</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    const emailModal = new bootstrap.Modal(document.getElementById('emailModal'));
+
+    document.querySelectorAll('.reply-btn').forEach(btn => {
+      btn.addEventListener('click', function () {
+        const email = this.getAttribute('data-email');
+        const id = this.getAttribute('data-id');
+        document.getElementById('emailTo').value = email;
+        document.getElementById('emailRowId').value = id;
+        document.getElementById('emailMessage').value = '';
+        emailModal.show();
+      });
+    });
+
+    document.getElementById('emailForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+      const email = document.getElementById('emailTo').value;
+      const message = document.getElementById('emailMessage').value;
+      const rowId = document.getElementById('emailRowId').value;
+
+      fetch("{% url 'send_email' %}", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': '{{ csrf_token }}'
+        },
+        body: JSON.stringify({ email: email, message: message })
+      })
+      .then(response => response.json())
+      .then(data => {
+        alert(`Email successfully sent to: ${data.email}`);
+        emailModal.hide();
+
+        // Change button to red
+        const btn = document.getElementById('reply-btn-' + rowId);
+        btn.classList.remove('btn-primary');
+        btn.classList.add('btn-danger');
+        btn.innerHTML = '<i class="bi bi-check-circle"></i> Replied';
+        btn.disabled = true;
+      })
+      .catch(error => {
+        alert("Failed to send email.");
+        console.error(error);
+      });
+    });
+  </script>
+</body>
+</html>

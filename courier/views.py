@@ -3,7 +3,7 @@ from .forms import SignupForm
 from django.contrib.auth import logout
 from .models import Signup
 from django.contrib import messages
-
+from .forms import ComplaintForm
 from django.contrib.auth import login as auth_login  # alias to avoid confusion
 from django.views.decorators.cache import never_cache
 
@@ -48,6 +48,14 @@ def user_logout(request):
     logout(request)
     return redirect('/')
 def home(request):
+    if request.method == 'POST':
+        form = ComplaintForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Your complaint has been submitted successfully!")
+            return redirect('/')  # You can change this to a thank-you page if you want
+    else:
+        form = ComplaintForm()
     return render(request,'courier/index.html')
 def navbar(request):
     return render(request,'courier/dash-nav.html')
@@ -218,3 +226,58 @@ def courier_bill(request):
         'cn_nos': cn_list,
     }
     return render(request, 'courier/bills.html', context)
+
+# def complain(request):
+#     return render(request, 'courier/complain_box.html')
+from django.shortcuts import render
+from .models import Complaint
+
+# def complain(request):
+#     complains = Complaint.objects.all().order_by('-id')
+#     return render(request, 'courier/complain_box.html', {'complains': complains})
+from django.shortcuts import render
+from django.core.mail import EmailMessage
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+import json
+from .models import Complaint
+
+def complain(request):
+    complains = Complaint.objects.all().order_by('-id')
+    return render(request, 'courier/complain_box.html', {'complains': complains})
+
+@csrf_exempt
+def send_email(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        email = data.get('email')
+        message = data.get('message')
+
+        # Fetch complaint
+        complaint = Complaint.objects.filter(email=email).order_by('-date_submitted').first()
+        if not complaint:
+            return JsonResponse({'error': 'Complaint not found'}, status=404)
+
+        # Email sending
+        subject = "Thank you for your feedback - DK Courier"
+        html_content = f"""
+        <html>
+        <body style="font-family: Arial; padding: 10px;">
+            <h3 style="color: orange;">DK Courier</h3>
+            <p>{message}</p>
+            <hr>
+            <small>This is an automated reply from DK Courier.</small>
+        </body>
+        </html>
+        """
+        email_obj = EmailMessage(subject, html_content, "your_email@example.com", [email])
+        email_obj.content_subtype = "html"
+        email_obj.send()
+
+        # Mark complaint as replied
+        complaint.replied = True
+        complaint.save()
+
+        return JsonResponse({'status': 'success'})
+
+    return JsonResponse({'error': 'Invalid request'}, status=400)

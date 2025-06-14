@@ -14,5 +14,7 @@ urlpatterns = [
     path('bills/<str:cn_no>/', views.pkt_pdf, name='pdf'),
     path('billsbank/<str:cn_no>/', views.pkt_pdf1, name='pdf1'),
     path('invoice/', views.invoice, name='invoice'),
-    path('bill/', views.courier_bill, name='bills')   
+    path('bill/', views.courier_bill, name='bills'),
+    path('complain/', views.complain, name='complain'),
+    path('send-email/', views.send_email, name='send_email'),
 ]
