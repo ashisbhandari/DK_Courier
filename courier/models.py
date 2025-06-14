@@ -90,9 +90,7 @@ class Signup(AbstractBaseUser, PermissionsMixin):
     class Meta:
         db_table = 'signup'
 
-
-
-
+    
 class Booking_list(models.Model):
     cn_no = models.CharField(max_length=20, unique=True, blank=True)
 

@@ -1,13 +1,12 @@
-from django.shortcuts import render, redirect
-from django.contrib import messages
+from django.shortcuts import render, redirect,get_object_or_404
 from .forms import SignupForm
+from django.contrib.auth import logout
 from .models import Signup
-from django.contrib.auth.decorators import login_required
-from .forms import LoginForm
-from django.contrib.auth import login,logout,authenticate
 from django.contrib import messages
 
-from django.contrib.auth.hashers import check_password
+from django.contrib.auth import login as auth_login  # alias to avoid confusion
+from django.views.decorators.cache import never_cache
+
 
 
 def signup(request):
@@ -19,16 +18,11 @@ def signup(request):
     else:
         form = SignupForm()
     return render(request, 'courier/signup.html', {'form': form})
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth import authenticate, login
-from django.contrib import messages
 
-from django.contrib import messages
-from django.contrib.auth import login
-from django.shortcuts import render, redirect
-from .models import Signup
 
-def login_user(request):
+
+@never_cache
+def login(request):
     if request.method == 'POST':
         email = request.POST.get('email')
         password = request.POST.get('password')
@@ -37,16 +31,17 @@ def login_user(request):
             user = Signup.objects.get(email=email)
             if user.check_password(password):
                 if user.is_active:
-                    login(request, user)  # sets session
-                    return redirect('/Admin/')  # or reverse('dashboard')
+                    auth_login(request, user)  # now calls Django's login correctly
+                    messages.success(request, "Login successful!")
+                    return redirect('/dashboard')
                 else:
                     messages.error(request, "Account is inactive.")
             else:
                 messages.error(request, "Incorrect password.")
         except Signup.DoesNotExist:
-            messages.error(request, "No user found with this email.")
-
+            messages.error(request, "User does not exist.")
     return render(request, 'courier/login.html')
+
 
 # logout also kills session
 def user_logout(request):
@@ -57,27 +52,27 @@ def home(request):
 def navbar(request):
     return render(request,'courier/dash-nav.html')
 # @login_required(login_url='/Login/')
-def dashboard1(request):
-    bookings = BookingList.objects.order_by('-id')
+# def dashboard1(request):
+#     bookings = BookingList.objects.order_by('-id')
 
-    total_shipments = bookings.count()
-    total_cash = bookings.filter(payments='Cash').count()
-    total_cod = bookings.filter(payments='COD').count()
-    total_credit = bookings.filter(payments='Credit').count()
+#     total_shipments = bookings.count()
+#     total_cash = bookings.filter(payments='Cash').count()
+#     total_cod = bookings.filter(payments='COD').count()
+#     total_credit = bookings.filter(payments='Credit').count()
 
-    context = {
-        'bookings': bookings,
-        'total_shipments': total_shipments,
-        'total_cash': total_cash,
-        'total_cod': total_cod,
-        'total_credit': total_credit,
-    }
-    return render(request, 'courier/check.html',context)
+#     context = {
+#         'bookings': bookings,
+#         'total_shipments': total_shipments,
+#         'total_cash': total_cash,
+#         'total_cod': total_cod,
+#         'total_credit': total_credit,
+#     }
+#     return render(request, 'courier/check.html',context)
 
 
 from .models import BookingList
-from django.shortcuts import render
 
+from django.contrib.auth.decorators import login_required
 
 # def dashboard(request):
 #     bookings = BookingList.objects.order_by('-id')
@@ -97,6 +92,7 @@ from django.shortcuts import render
 #     return render(request, 'courier/dashboard.html', context)
 
 from django.shortcuts import render
+@login_required(login_url='/Login/') 
 def dashboard(request):
     sender_name = request.GET.get('sender_name', '').strip()
     start_date = request.GET.get('start_date', '').strip()
@@ -137,6 +133,8 @@ def dashboard(request):
 from django.shortcuts import render, get_object_or_404
 from .models import PdfParcel
 from .forms import BookingForm 
+
+@login_required(login_url='/Login/') 
 def bookdoc(request):
     if request.method == 'POST':
         form = BookingForm(request.POST)
@@ -147,6 +145,8 @@ def bookdoc(request):
         form = BookingForm() 
     return render(request, 'courier/bookdoc.html', {'form': form})
 
+
+@login_required(login_url='/Login/') 
 def book_edit(request, cn_no):
     parcel = get_object_or_404(PdfParcel, CN_No=cn_no)
     if request.method == 'POST':
@@ -160,10 +160,14 @@ def book_edit(request, cn_no):
 
 
 # customer bills pdf
+
+@login_required(login_url='/Login/') 
 def pkt_pdf(request, cn_no):  # Get cn_no from URL param
     parcel = get_object_or_404(PdfParcel, CN_No=cn_no)
     return render(request, 'courier/pdf.html', {'row': parcel})
 # bank bills pdf without cash and weight
+
+@login_required(login_url='/Login/') 
 def pkt_pdf1(request, cn_no):  # Get cn_no from URL param
     parcel = get_object_or_404(PdfParcel, CN_No=cn_no)
     return render(request, 'courier/pdf1.html', {'row': parcel})
@@ -178,6 +182,8 @@ def pkt_pdf1(request, cn_no):  # Get cn_no from URL param
 from .models import PdfParcel  # replace with your actual model name
 
 from django.shortcuts import render, get_list_or_404
+
+@login_required(login_url='/Login/') 
 def invoice(request):
     cn_nos = request.GET.get('cn_no')
     if not cn_nos:
@@ -197,6 +203,7 @@ def invoice(request):
     return render(request, 'courier/invoice.html', context)
 
 
+@login_required(login_url='/Login/') 
 def courier_bill(request):
     cn_nos = request.GET.get('cn_no')
     if not cn_nos:

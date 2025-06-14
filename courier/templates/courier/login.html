@@ -158,14 +158,16 @@
 <div class="container">    
      <h1><b>DK Courier</b></h1>
         <h2><b>Login as DK Courier</b></h2>
-    <form method="POST" action="{% url 'login' %}">
-        {% if messages %}
+        <form method="POST" action="{% url 'login' %}">
+               {% if messages %}
 <div class="alert alert-danger" role="alert">
     {% for message in messages %}
         <p>{{ message }}</p>
     {% endfor %}
 </div>
 {% endif %}
+    {% comment %} <form method="POST" action="{% url 'dashboard'%}"> {% endcomment %}
+    
         {% csrf_token %}
         <label for="email">Enter  Email address</label>
         <input type="text" name="email" id="email" required class="input-field" placeholder="Enter username or company name" autocomplete="username">

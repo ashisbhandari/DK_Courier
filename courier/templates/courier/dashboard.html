@@ -197,7 +197,7 @@
                         <td>{{ booking.sname }}</td>
                         <td>{{ booking.snumber }}</td>
                         <td>{{ booking.pactype }}</td>
-                        <td>{{ booking.pieces }}</td>
+                        <td>{{ booking.pieces }} |  {{ booking.payments }}</td>
                         <td>{{ booking.rname }}</td>
                         <td>{{ booking.raddress }}</td>
                         <td>{{ booking.rnumber }}</td>
@@ -235,83 +235,81 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-    // Select/Deselect all checkboxes
-    function toggleSelectAll(source) {
-        const checkboxes = document.getElementsByName('selected_booking');
-        for (let i = 0; i < checkboxes.length; i++) {
-            checkboxes[i].checked = source.checked;
-        }
-        updateInvoiceBtn();
-        updateBillsBtn();
-    }
-
-    // Update Invoice button enabled state based on selections
-    function updateInvoiceBtn() {
-        const invoiceBtn = document.getElementById("invoiceBtn");
-        const selectedCount = document.querySelectorAll('input[name="selected_booking"]:checked').length;
-        invoiceBtn.disabled = selectedCount === 0;
-    }
-
-    // Update Bills button enabled state based on selections
-    function updateBillsBtn() {
-        const billsBtn = document.getElementById("billsBtn");
-        const selectedCount = document.querySelectorAll('input[name="selected_booking"]:checked').length;
-        billsBtn.disabled = selectedCount === 0;
-    }
-
-    // Attach change listeners to checkboxes to update both buttons
-    document.querySelectorAll('input[name="selected_booking"]').forEach(cb => {
-        cb.addEventListener('change', () => {
-            updateInvoiceBtn();
-            updateBillsBtn();
-        });
-    });
-
-    // Initial state check
-    updateInvoiceBtn();
-    updateBillsBtn();
-
-    // Invoice button click handler
-    document.getElementById("invoiceBtn").addEventListener("click", function () {
-        let selected = [];
-        document.querySelectorAll('input[name="selected_booking"]:checked').forEach(function (checkbox) {
-            selected.push(checkbox.value);
-        });
-
-        if (selected.length === 0) {
-            alert("Please select at least one booking to generate invoice.");
-            return;
+        // Toggle all checkboxes when "Select All" is clicked
+        function toggleSelectAll(source) {
+            const checkboxes = document.querySelectorAll('input[name="selected_booking"]');
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = source.checked;
+            });
+            updateActionButtons();
         }
 
-        window.location.href = `/invoice?cn_no=${selected.join(',')}`;
-    });
+        // Enable or disable Invoice and Bills buttons based on selection
+        function updateActionButtons() {
+            const invoiceBtn = document.getElementById("invoiceBtn");
+            const billsBtn = document.getElementById("billsBtn");
+            const selectedCount = document.querySelectorAll('input[name="selected_booking"]:checked').length;
 
-    // Bills button click handler
-    document.getElementById("billsBtn").addEventListener("click", function () {
-        let selected = [];
-        document.querySelectorAll('input[name="selected_booking"]:checked').forEach(function (checkbox) {
-            selected.push(checkbox.value);
-        });
+            invoiceBtn.disabled = selectedCount === 0;
+            billsBtn.disabled = selectedCount === 0;
 
-        if (selected.length === 0) {
-            alert("Please select at least one booking to generate bills.");
-            return;
+            // Update "Select All" checkbox state
+            const allCheckboxes = document.querySelectorAll('input[name="selected_booking"]');
+            const selectAllCheckbox = document.getElementById('selectAll');
+
+            if (allCheckboxes.length === selectedCount && allCheckboxes.length > 0) {
+                selectAllCheckbox.checked = true;
+                selectAllCheckbox.indeterminate = false; // Fully checked
+            } else if (selectedCount > 0) {
+                selectAllCheckbox.checked = false;
+                selectAllCheckbox.indeterminate = true;  // Partial selection
+            } else {
+                selectAllCheckbox.checked = false;
+                selectAllCheckbox.indeterminate = false; // None selected
+            }
         }
 
-        window.location.href = `/bill?cn_no=${selected.join(',')}`;
-    });
-
-    // Client-side filtering of table rows based on #filter input
-    document.getElementById('filter').addEventListener('input', function () {
-        const filterValue = this.value.toLowerCase();
-        const rows = document.querySelectorAll('#Booked_items tbody tr');
-        rows.forEach(row => {
-            // Skip empty row message
-            if (row.querySelector('td').hasAttribute('colspan')) return;
-            row.style.display = row.textContent.toLowerCase().includes(filterValue) ? '' : 'none';
+        // Listen to changes on individual checkboxes to update buttons and "Select All"
+        document.querySelectorAll('input[name="selected_booking"]').forEach(cb => {
+            cb.addEventListener('change', updateActionButtons);
         });
-    });
-</script>
 
+        // Initial button and checkbox state setup on page load
+        updateActionButtons();
+
+        // Invoice button click validation
+        document.getElementById("invoiceBtn").addEventListener("click", function () {
+            let selected = Array.from(document.querySelectorAll('input[name="selected_booking"]:checked')).map(cb => cb.value);
+
+            if (selected.length === 0) {
+                alert("Please select at least one booking to generate invoice.");
+                return;
+            }
+
+            window.location.href = `/invoice?cn_no=${selected.join(',')}`;
+        });
+
+        // Bills button click validation
+        document.getElementById("billsBtn").addEventListener("click", function () {
+            let selected = Array.from(document.querySelectorAll('input[name="selected_booking"]:checked')).map(cb => cb.value);
+
+            if (selected.length === 0) {
+                alert("Please select at least one booking to generate bills.");
+                return;
+            }
+
+            window.location.href = `/bill?cn_no=${selected.join(',')}`;
+        });
+
+        // Filter search box functionality (optional, already in your code)
+        document.getElementById('filter').addEventListener('input', function () {
+            const filterValue = this.value.toLowerCase();
+            const rows = document.querySelectorAll('#Booked_items tbody tr');
+            rows.forEach(row => {
+                if (row.querySelector('td').hasAttribute('colspan')) return;
+                row.style.display = row.textContent.toLowerCase().includes(filterValue) ? '' : 'none';
+            });
+        });
+    </script>
 </body>
 </html>

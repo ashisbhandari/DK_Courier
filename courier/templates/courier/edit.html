@@ -30,23 +30,17 @@
       display: none !important;
     }
   </style>
-  <script>
-    function setDefaultDate() {
-      const now = new Date();
-      const formattedDate = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
-      document.getElementById('realDateTextBox').value = formattedDate;
-    }
-    window.onload = setDefaultDate;
-  </script>
 </head>
-<body>
+<body onload="setDefaultDate()">
   {% include "courier/dashboard-nav.html" %}
-<a href="/billsbank/{{ row.CN_No }}/" class="btn btn-success ml-3 home-btn">Bank</a>
-<a href="/bills/{{ row.CN_No }}/" class="btn btn-success ml-3 home-btn">Customer</a>
-<a href="/dashboard" class="btn btn-success ml-3 home-btn">View Packet</a>
-<a href="/book" class="btn btn-success ml-3 home-btn">Add Packet</a>
+  <div class="container my-3 text-center">
+    <a href="/billsbank/{{ row.CN_No }}/" class="btn btn-success mx-1">Bank</a>
+    <a href="/bills/{{ row.CN_No }}/" class="btn btn-success mx-1">Customer</a>
+    <a href="/dashboard" class="btn btn-success mx-1">View Packet</a>
+    <a href="/book" class="btn btn-success mx-1">Add Packet</a>
+  </div>
 
-  <div class="container my-3">
+  <div class="container mb-4">
     <div class="d-flex align-items-center justify-content-center gap-3">
       <img src="{% static 'courier/images/logo.png' %}" alt="DK Courier Logo" style="height: 60px;">
       <div class="text-start lh-sm">
@@ -60,124 +54,28 @@
     <form method="post">
       {% csrf_token %}
       <div class="row mb-3">
-        
         <div class="col-md-3 col-sm-6 mb-2">
           <label>CN NO:</label>
           <p>{{ row.CN_No }}</p>
         </div>
-        <div class="col-md-3 col-sm-6 mb-2">
-          <label>Destination Country <span class="text-danger">*</span></label>
-          <select name="country" id="countrySelect" class="form-select" disabled>
-    <option value="{{ row.country }}" selected>{{ row.country }}</option>
-    <!-- If needed, you can still keep the full list for later use -->
-    <!--
-    <option value="Nepal">Nepal</option>
-    <option value="India">India</option>
-    <option value="UAE">UAE</option>
-    <option value="Australia">Australia</option>
-    <option value="Canada">Canada</option>
-    <option value="Qatar">Qatar</option>
-    <option value="Saudi Arabia">Saudi Arabia</option>
-    <option value="USA">USA</option>
-    -->
-  </select>
-        </div>
-        <div class="col-md-3 col-sm-6 mb-2" id="districtWrapper">
-          <label>Destination District <span class="text-danger">*</span></label>
-          <select name="country" id="countrySelect" class="form-select" disabled>
-            <option value="{{ row.district }}" selected>{{ row.district }}</option>
 
-          {% comment %} <select name="district" id="districtSelect" class="form-select">
-            <option value="" disabled>Select District</option>
-                                        <option value="acham">Acham</option>
-                                        <option value="arghakhanchi">Arghakhanchi</option>
-                                        <option value="baglung">Baglung</option>
-                                        <option value="bajhang">Bajhang</option>
-                                        <option value="bajura">Bajura</option>
-                                        <option value="baitadi">Baitadi</option>
-                                        <option value="banke">Banke</option>
-                                        <option value="bardiya">Bardiya</option>
-                                        <option value="bara">Bara</option>
-                                        <option value="Bhaktapur">Bhaktapur</option>
-                                        <option value="bhojpur">Bhojpur</option>
-                                        <option value="chitwan">Chitwan</option>
-                                        <option value="dadeldhura">Dadeldhura</option>
-                                        <option value="Dang">Dang</option>
-                                        <option value="dailekh">Dailekh</option>
-                                        <option value="darchula">Darchula</option>
-                                        <option value="dhading">Dhading</option>
-                                        <option value="dhankuta">Dhankuta</option>
-                                        <option value="dhanusha">Dhanusha</option>
-                                        <option value="dolakha">Dolakha</option>
-                                        <option value="dolpa">Dolpa</option>
-                                        <option value="doti">Doti</option>
-                                        <option value="eastern_rukum">Eastern Rukum</option>
-                                        <option value="gulmi">Gulmi</option>
-                                        <option value="gorkha">Gorkha</option>
-                                        <option value="humla">Humla</option>
-                                        <option value="ilam">Ilam</option>
-                                        <option value="jhapa">Jhapa</option>
-                                        <option value="jajarkot">Jajarkot</option>
-                                        <option value="jumla">Jumla</option>
-                                        <option value="Kathmandu">Kathmandu</option>
-                                        <option value="kanchanpur">Kanchanpur</option>
-                                        <option value="kailali">Kailali</option>
-                                        <option value="kalikot">Kalikot</option>
-                                        <option value="kapilvastu">Kapilvastu</option>
-                                        <option value="kaski">Kaski</option>
-                                        <option value="khotang">Khotang</option>
-                                        <option value="kavrepalanchok">Kavrepalanchok</option>
-                                        <option value="lalitpur">Lalitpur</option>
-                                        <option value="lamjung">Lamjung</option>
-                                        <option value="mahendranagar">Mahendranagar</option>
-                                        <option value="mahottari">Mahottari</option>
-                                        <option value="makwanpur">Makwanpur</option>
-                                        <option value="manang">Manang</option>
-                                        <option value="morang">Morang</option>
-                                        <option value="mugu">Mugu</option>
-                                        <option value="myagdi">Myagdi</option>
-                                        <option value="mustang">Mustang</option>
-                                        <option value="nawalpur">Nawalpur</option>
-                                        <option value="east-nawalparasi">East-Nawalparasi</option>
-                                        <option value="west-nawalparasi">West-Nawalparasi</option>
-                                        <option value="nuwakot">Nuwakot</option>
-                                        <option value="okhaldhunga">Okhaldhunga</option>
-                                        <option value="parbat">Parbat</option>
-                                        <option value="parsa">Parsa</option>
-                                        <option value="pachthar">Pachthar</option>
-                                        <option value="palpa">Palpa</option>
-                                        <option value="pyuthan">Pyuthan</option>
-                                        <option value="rajbiraj">Rajbiraj</option>
-                                        <option value="rautahat">Rautahat</option>
-                                        <option value="ramechap">Ramechap</option>
-                                        <option value="rasuwa">Rasuwa</option>
-                                        <option value="Rupandehi">Rupandehi</option>
-                                        <option value="Rolpa">Rolpa</option>
-                                        <option value="salyan">Salyan</option>
-                                        <option value="sankhuwasabha">Sankhuwasabha</option>
-                                        <option value="saptari">Saptari</option>
-                                        <option value="sarlahi">Sarlahi</option>
-                                        <option value="sindhuli">Sindhuli</option>
-                                        <option value="sindhupalchok">Sindhupalchok</option>
-                                        <option value="siraha">Siraha</option>
-                                        <option value="solukhumbu">Solukhumbu</option>
-                                        <option value="sunsari">Sunsari</option>
-                                        <option value="Surkhet">Surkhet</option>
-                                        <option value="Syangja">Syangja</option>
-                                        <option value="tanahun">Tanahun</option>
-                                        <option value="taplejung">Taplejung</option>
-                                        <option value="terhathum">Terhathum</option>
-                                        <option value="udayapur">Udayapur</option>
-                                        <option value="western_rukum">Western Rukum</option>{% endcomment %}
-          </select> 
-        </div>
         <div class="col-md-3 col-sm-6 mb-2">
-  <label>Packet Type <span class="text-danger">*</span></label>
-  <select name="pactype" class="form-select" required>
-    <option value="Document" {% if row.pactype == "Document" %}selected{% endif %}>Document</option>
-    <option value="Parcel" {% if row.pactype == "Parcel" %}selected{% endif %}>Parcel</option>
-  </select>
-</div>
+          <label>Destination Country</label>
+          <input type="text" name="country" class="form-control" value="{{ row.country }}" readonly>
+        </div>
+
+        <div class="col-md-3 col-sm-6 mb-2">
+          <label>Destination District</label>
+          <input type="text" name="district" class="form-control" value="{{ row.district }}" readonly>
+        </div>
+
+        <div class="col-md-3 col-sm-6 mb-2">
+          <label>Packet Type <span class="text-danger">*</span></label>
+          <select name="pactype" class="form-select" required>
+            <option value="Document" {% if row.pactype == "Document" %}selected{% endif %}>Document</option>
+            <option value="Parcel" {% if row.pactype == "Parcel" %}selected{% endif %}>Parcel</option>
+          </select>
+        </div>
 
         <div class="col-md-3 col-sm-6 mb-2">
           <label>Booking Date</label>
@@ -189,11 +87,11 @@
       <div class="row mb-3">
         <div class="col-md-4 mb-2">
           <label>Name <span class="text-danger">*</span></label>
-          <input type="text" name="Sname" value="{{ row.Sname }}" class="form-control"  required>
+          <input type="text" name="Sname" value="{{ row.Sname }}" class="form-control" required>
         </div>
         <div class="col-md-4 mb-2">
           <label>Phone Number <span class="text-danger">*</span></label>
-          <input type="tel" name="Snumber" pattern="[0-9]{10}" value="{{row.Snumber }}" class="form-control" required>
+          <input type="tel" name="Snumber" pattern="[0-9]{10}" value="{{ row.Snumber }}" class="form-control" required>
         </div>
         <div class="col-md-4 mb-2">
           <label>Address Line 1 <span class="text-danger">*</span></label>
@@ -209,19 +107,19 @@
       <div class="row mb-3">
         <div class="col-md-4 mb-2">
           <label>Name <span class="text-danger">*</span></label>
-          <input type="text" name="Rname" class="form-control"value="{{ row.Rname }}" required>
+          <input type="text" name="Rname" value="{{ row.Rname }}" class="form-control" required>
         </div>
         <div class="col-md-4 mb-2">
           <label>Phone Number <span class="text-danger">*</span></label>
-          <input type="tel" name="Rnumber" pattern="[0-9]{10}"value="{{ row.Rnumber }}" class="form-control" required>
+          <input type="tel" name="Rnumber" pattern="[0-9]{10}" value="{{ row.Rnumber }}" class="form-control" required>
         </div>
         <div class="col-md-4 mb-2">
           <label>Address Line 1 <span class="text-danger">*</span></label>
-          <input type="text" name="Raddress"value="{{ row.Raddress}}" class="form-control" required>
+          <input type="text" name="Raddress" value="{{ row.Raddress }}" class="form-control" required>
         </div>
         <div class="col-md-12">
           <label>Address Line 2</label>
-          <input type="text" name="Raddress1" value="{{row.country}}-{{row.district}}" class="form-control">
+          <input type="text" name="Raddress1" value="{{ row.country }}-{{ row.district }}" class="form-control">
         </div>
       </div>
 
@@ -229,34 +127,39 @@
       <div class="row mb-3">
         <div class="col-md-2 col-sm-6 mb-2">
           <label>Payment</label>
-          <select name="payments"value="{{row.payments}}" class="form-select">
-            <option value="Cash">Cash</option>
-            <option value="Credit">Credit</option>
-            <option value="COD">COD</option>
+          <select name="payments" class="form-select">
+            <option value="Cash" {% if row.payments == "Cash" %}selected{% endif %}>Cash</option>
+            <option value="Credit" {% if row.payments == "Credit" %}selected{% endif %}>Credit</option>
+            <option value="COD" {% if row.payments == "COD" %}selected{% endif %}>COD</option>
           </select>
         </div>
+
         <div class="col-md-2 col-sm-6 mb-2">
           <label>Delivery Service <span class="text-danger">*</span></label>
-          <select name="service" class="form-select" value="{{row.service}}" required>
-            <option value="Door to Door">Door to Door</option>
-            <option value="Office Collect">Office Collect</option>
+          <select name="service" class="form-select" required>
+            <option value="Door to Door" {% if row.service == "Door to Door" %}selected{% endif %}>Door to Door</option>
+            <option value="Office Collect" {% if row.service == "Office Collect" %}selected{% endif %}>Office Collect</option>
           </select>
         </div>
+
         <div class="col-md-2 col-sm-6 mb-2">
-          <label>Total Valuation (RS) <span class="text-danger">*</span></label>
-          <input type="text" name="price" class="form-control" value="{{row.price}}">
+          <label>Total Valuation (Rs) <span class="text-danger">*</span></label>
+          <input type="text" name="price" class="form-control" value="{{ row.price }}" required>
         </div>
+
         <div class="col-md-2 col-sm-6 mb-2">
           <label>Weight (KG) <span class="text-danger">*</span></label>
-          <input type="number" name="weight" value="{{row.weight}}" class="form-control" required>
+          <input type="number" name="weight" value="{{ row.weight }}" class="form-control" required>
         </div>
+
         <div class="col-md-2 col-sm-6 mb-2">
           <label>Pieces</label>
-          <input type="number" name="pieces" class="form-control" value="{{row.pieces}}" required>
+          <input type="number" name="pieces" class="form-control" value="{{ row.pieces }}" required>
         </div>
+
         <div class="col-md-2 col-sm-6 mb-2">
           <label>Booked By</label>
-          <input type="text" name="Bookby" class="form-control" value="{{row.Bookby}}">
+          <input type="text" name="Bookby" class="form-control" value="{{ row.Bookby }}">
         </div>
       </div>
 
@@ -267,18 +170,14 @@
   </div>
 
   <script>
-    document.getElementById("countrySelect").addEventListener("change", function () {
-      const districtWrapper = document.getElementById("districtWrapper");
-      const districtSelect = document.getElementById("districtSelect");
-      if (this.value === "Nepal") {
-        districtWrapper.classList.remove("hidden");
-        districtSelect.required = true;
-      } else {
-        districtWrapper.classList.add("hidden");
-        districtSelect.required = false;
-        districtSelect.value = "";
+    function setDefaultDate() {
+      const now = new Date();
+      const formattedDate = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+      const dateField = document.getElementById('realDateTextBox');
+      if (dateField) {
+        dateField.value = formattedDate;
       }
-    });
+    }
   </script>
 </body>
 </html>
