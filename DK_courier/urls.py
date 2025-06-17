@@ -21,3 +21,4 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('courier.urls')),
 ]
+handler404 = 'courier.views.custom_404'

@@ -187,7 +187,17 @@ def pkt_pdf1(request, cn_no):  # Get cn_no from URL param
 #     return render(request,"courier/invoice.html")
 
 
-from .models import PdfParcel  # replace with your actual model name
+from .models import PdfParcel
+
+def track_parcel(request):
+    tracked_parcels = None
+    if request.method == 'POST':
+        cn_no = request.POST.get('trackingnumber')
+        tracked_parcels = PdfParcel.objects.filter(cn_no=cn_no)
+
+    return render(request, 'courier/index.html', {
+        'tracked_parcels': tracked_parcels
+    })
 
 from django.shortcuts import render, get_list_or_404
 
@@ -294,3 +304,5 @@ def send_email(request):
         return JsonResponse({'status': 'success'})
 
     return JsonResponse({'error': 'Invalid request'}, status=400)
+def custom_404(request, exception):
+    return render(request, "courier/pnferror.html", status=404)

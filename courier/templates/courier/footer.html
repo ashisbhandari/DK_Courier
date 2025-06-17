@@ -4,27 +4,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    {% comment %} <title>footer</title> {% endcomment %}
+    <title>DK Courier Footer</title>
+
+    <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+
     <style>
         .content {
             flex-grow: 1;
         }
 
-        /* Footer styles */
         footer {
-            background: linear-gradient(135deg,rgb(42, 48, 49),rgb(61, 60, 61));
+            background: linear-gradient(135deg, rgb(42, 48, 49), rgb(61, 60, 61));
             color: white;
-            padding-top: 20px; /* Reduced padding for a smaller footer */
-            
-        }
-
-        footer .social-links img {
-            transition: transform 0.3s ease;
-        }
-
-        footer .social-links img:hover {
-            transform: scale(1.5);
+            padding-top: 20px;
         }
 
         footer a {
@@ -36,52 +29,84 @@
         footer a:hover {
             color: #ff6347;
         }
-        footer .h5, footer .small {
-            font-size: 1rem; 
+
+        .social-links img {
+            transition: transform 0.3s ease;
         }
-       
+
+        .social-links img:hover {
+            transform: scale(1.5);
+        }
+
+        footer .h5, footer .h6, footer .small {
+            font-size: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            footer .h5, footer .h6 {
+                font-size: 1rem;
+                text-align: center;
+            }
+
+            .social-links {
+                text-align: center;
+            }
+
+            .social-links a {
+                display: block;
+                margin-bottom: 10px;
+            }
+
+            .text-md-start {
+                text-align: center !important;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .social-links img {
+                width: 18px;
+                height: 18px;
+            }
+        }
     </style>
 </head>
 <body>
+
     <div class="content">
+        <!-- Your page content -->
     </div>
 
-    <footer class="bg-dark text-white text-center py-2">
+    <footer class="text-white text-center text-md-start py-4">
         <div class="container">
-            <div class="row" style="padding-top:20px">
-                <div class="col-md-3 mb-3 mb-md-0">
-                    <p class="h5 mb-2"><a href="" class="text-white"> @DKCourier</a></p>
-
-
-                    <br>
-                    <div class="mt-3">
-                        <p class="small text-muted mb-0">&copy; {{ year }} DKCourier. All Rights Reserved.</p>
-                    </div>
+            <div class="row align-items-start">
+                <!-- DK Courier Section -->
+                <div class="col-md-4 mb-4 mb-md-0">
+                    <h5 class="text-uppercase mb-3">@DKCourier</h5>
+                    <p class="small text-muted mb-0">&copy; {{ year }} DKCourier. All Rights Reserved.</p>
                 </div>
 
-                {% comment %} Contact information {% endcomment %}
-                <div class="col-md-4 mb-3 mb-md-0">
-                    <p class="h6 mb-2">Contact Us</p>
-                    <p class="mb-1"><a href="tel:+9779807944547" class="text-white">+977 9807944547</a></p>
-                    <p class="mb-1"><a href="tel:+9779708422701" class="text-white">+977 9708422701</a></p>
+                <!-- Contact Info -->
+                <div class="col-md-4 mb-4 mb-md-0">
+                    <h6 class="text-uppercase mb-3">Contact Us</h6>
+                    <p class="mb-1"><a href="tel:+9779807944547">+977 9807944547</a></p>
+                    <p class="mb-1"><a href="tel:+9779708422701">+977 9708422701</a></p>
                 </div>
 
                 <!-- Social Links -->
                 <div class="col-md-4">
-                    <p class="h6 mb-2">Follow Us</p>
+                    <h6 class="text-uppercase mb-3">Follow Us</h6>
                     <div class="social-links">
-                        <a href="https://www.facebook.com/dilkumar.uparkoti.9" class="text-white me-3" target="_blank">
-                            <img src="{% static 'courier/images/fblogo.jpg' %}" alt="Ashish Bhandari" width="20" height="20"> DilKumar Uparkoti
+                        <a href="https://www.facebook.com/dilkumar.uparkoti.9" target="_blank">
+                            <img src="{% static 'courier/images/fblogo.jpg' %}" alt="Ashish Bhandari" width="20" height="20">
+                            <span class="ms-2">Dilkumar Uparkoti</span>
                         </a>
-                        <br>
-                        <a href="#" class="text-white" target="_blank">
-                            <img src="{% static 'courier/images/fblogo.jpg' %}" alt="DK_courier" width="20" height="20">DK Courier
+                        <a href="#" target="_blank">
+                            <img src="{% static 'courier/images/fblogo.jpg' %}" alt="DK Courier" width="20" height="20">
+                            <span class="ms-2">DK Courier</span>
                         </a>
                     </div>
                 </div>
             </div>
-
-           
         </div>
     </footer>
 

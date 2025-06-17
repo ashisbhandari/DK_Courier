@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DK Courier-Navbar</title>
+    <title>DK Courier - Navbar</title>
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -25,7 +25,7 @@
             z-index: 1000;
             background: linear-gradient(135deg, #e0f7fa, #e1bee7);
             box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
-            transition: top 0.3s ease; /* Smooth transition for hiding */
+            transition: top 0.3s ease;
         }
 
         .navbar-top {
@@ -49,22 +49,17 @@
 
         .contact-container {
             display: flex;
-            justify-content: center;
             flex-wrap: wrap;
+            justify-content: center;
             gap: 10px;
             font-size: 16px;
         }
 
-        .contact-container .con {
+        .con {
             margin: 5px;
         }
 
-        .contact-container a {
-            display: flex;
-            align-items: center;
-        }
-
-        .contact-container .icn {
+        .icn {
             margin-right: 5px;
         }
 
@@ -96,24 +91,6 @@
             color: #ff6347;
         }
 
-        #ticketOptions {
-            width: 150px;
-            font-size: 14px;
-            padding: 5px;
-        }
-
-        .login {
-            font-size: 15px;
-        }
-
-        .con {
-            margin: 10px;
-        }
-
-        .icn {
-            margin: 2px;
-        }
-
         .scroll-text-container {
             overflow: hidden;
             white-space: nowrap;
@@ -131,12 +108,13 @@
                 transform: translateX(100%);
             }
             100% {
-                transform: translateX(-50%);
+                transform: translateX(-100%);
             }
         }
 
-        /* Mobile Responsive */
+        /* Responsive Styles */
         @media (max-width: 768px) {
+            
             .navbar-top {
                 flex-direction: column;
                 align-items: center;
@@ -151,68 +129,49 @@
             }
 
             .social-icons a {
-                font-size: 20px; 
+                font-size: 15px; 
                 margin-right: 15px;
             }
 
-            .contact-container{
-                display: flex;
-                justify-content: center;
-                flex-wrap: wrap;
-                gap: 10px;
-                font-size: 15px;
+            .contact-container {
+                font-size: 14px;
+                text-align: center;
             }
 
-            #ticketOptions{
-                width: 80px;
+            .email-container {
+                width: 100%;
             }
 
-            .contact-container .con {
-                margin: 2px;
-            }
-
-            .contact-container a {
-                display: flex;
+            .login-options {
+                flex-direction: row;
                 align-items: center;
-            }
-
-            .contact-container .icn {
-                margin-right: 5px;
             }
         }
 
         @media (max-width: 480px) {
             .contact-container {
-                font-size: 10px; 
+                font-size: 12px; 
             }
 
             .social-icons a {
-                font-size: 18px; 
-            }
-
-            .navbar-top {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .login-options {
-                flex-direction: column;
-                align-items: center;
+                font-size: 15px;
             }
         }
     </style>
 </head>
 <body>
     <div class="navbar-wrapper" id="navbarWrapper">
-        <!-- First Row -->
+        <!-- Top Navbar -->
         <div class="navbar-top" id="navbarTop">
             <div class="social-icons">
-                <a href="#" target="_blank"><i class="fab fa-whatsapp"></i></a>
-                <a href="#" target="_blank"><i class="fab fa-facebook"></i></a>
-                <a href="#" target="_blank"><i class="fab fa-instagram"></i></a>
-                <a href="#" target="_blank"><i class="fab fa-youtube"></i></a>
+                <a href="#" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
             </div>
-            <div class="d-flex contact-container">
+
+            <!-- Contact Info -->
+            <div class="d-flex flex-wrap justify-content-center align-items-center contact-container">
                 <div class="phone-container con">
                     <a href="tel:+9779801445777" class="text-black">
                         <i class="fas fa-phone-alt icn"></i> 9807944547
@@ -223,55 +182,29 @@
                         <i class="fas fa-phone-alt icn"></i> 9708422701
                     </a>
                 </div>
-                <div class="email-container con">
-                    <a href="mailto:photolaija@email.com" class="text-black">
+
+                <!-- Email shown on new line in mobile -->
+                <div class="email-container con w-100 d-block d-md-none text-center mt-1">
+                    <a href="mailto:dkCourier@gmail.com" class="text-black">
+                        <i class="fas fa-envelope icn"></i> dkCourier@gmail.com
+                    </a>
+                </div>
+                <!-- Email shown inline in medium and larger screens -->
+                <div class="email-container con d-none d-md-block">
+                    <a href="mailto:dkCourier@gmail.com" class="text-black">
                         <i class="fas fa-envelope icn"></i> dkCourier@gmail.com
                     </a>
                 </div>
             </div>
-            <style>
-                #ticketOptions {
-                    appearance: none;
-                    -webkit-appearance: none;
-                    -moz-appearance: none;
-                    background: transparent;
-                    border: 2px solid white;
-                    color: black;
-                    padding: 5px 30px 5px 10px;
-                    font-size: 14px;
-                    background-image: url('data:image/svg+xml;utf8,<svg fill="black" height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
-                    background-repeat: no-repeat;
-                    background-position: right 10px center;
-                    background-size: 25px;
-                    box-shadow: 0px 2px 10px rgba(90, 20, 160, 0.12);
-                }
-                </style>
-            <div class="d-flex login-options">
-                <select class="form-select me-2 box" id="ticketOptions" onchange="navigateToPage()">
-                    <option selected>Track and Trace</option>
-                    <option id="ticketOptions" value="/#bus_ticket">Track Your packet</option>
-                    <option id="ticketOptions" value="/cancel_ticket">Request for packet information</option>
-                </select>
 
-                <script>
-                    function navigateToPage() {
-                        let select = document.getElementById("ticketOptions");
-                        let value = select.value;
-
-                        if (value !== "Tickets") {
-                            window.location.href = value;
-                        }
-                    }
-                </script>
-
-
+            <!-- Login/Signup Buttons -->
+            <div class="d-flex flex-wrap justify-content-center mt-2">
                 <a href="/Login" class="me-2 reg">
                     <button type="button" class="btn btn-login">
                         <i class="fas fa-sign-in-alt me-1 login"> Login</i>
                     </button>
                 </a>
-
-                <a href="/SignUp" class="me-2 reg" >
+                <a href="/SignUp" class="me-2 reg">
                     <button type="button" class="btn btn-login">
                         <i class="fas fa-user-plus me-1 login"> Signup</i>
                     </button>
@@ -279,17 +212,15 @@
             </div>
         </div>
 
-        <!-- Second Navbar -->
+        <!-- Main Navbar -->
         <nav class="navbar navbar-expand-lg navbar-bottom">
             <div class="container">
                 <a class="navbar-brand" href="/">
-                    <img src="{% static 'courier/images/logo.png' %}" alt="SajiloYatra" width="100" height="60">
+                    <img src="{% static 'courier/images/logo.png' %}" alt="DK Courier" width="100" height="60">
                 </a>
-
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav me-auto">
                         <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
@@ -298,30 +229,32 @@
                         <li class="nav-item"><a class="nav-link" href="/#contact">Contact</a></li>
                     </ul>
 
+                    <!-- Scroll Text -->
                     <div class="scroll-text-container">
-                        <a href="/"><div class="scroll-text">
-                            ( Let's share our love with our relatives through DK Courier. )
-                        </div></a>
+                        <a href="/">
+                            <div class="scroll-text">
+                                ( Let's share our love with our relatives through DK Courier. )
+                            </div>
+                        </a>
                     </div>
-
                 </div>
             </div>
         </nav>
     </div>
 
+    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
+    <!-- Hide top bar on scroll -->
     <script>
-        window.addEventListener('scroll', function() {
+        window.addEventListener('scroll', function () {
             let navbarTop = document.getElementById('navbarTop');
-            let navbarWrapper = document.getElementById('navbarWrapper');
-            if (window.scrollY > 50) { 
-                navbarTop.style.display = 'none'; 
+            if (window.scrollY > 50) {
+                navbarTop.style.display = 'none';
             } else {
                 navbarTop.style.display = 'flex';
             }
         });
     </script>
-
 </body>
 </html>
